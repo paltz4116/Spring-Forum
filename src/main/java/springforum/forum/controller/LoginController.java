@@ -28,8 +28,14 @@ public class LoginController {
                         @RequestParam("password") String password,
                         HttpServletRequest request) {
 
+        if (!memberService.checkMember(loginId, password)) {
+            return "login/login";
+        }
+
+        request.getSession().invalidate();
         HttpSession session = request.getSession();
-        session.invalidate();
+        session.setAttribute("userLoginId", loginId);
+        session.setMaxInactiveInterval(3200);
 
         return "redirect:/";
     }

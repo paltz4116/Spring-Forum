@@ -5,14 +5,14 @@
     <head th:replace="~{common/header::header}"></head>
     <body>
     <div class="container-sm w-25 y-5 mt-5 p-5 border border-secondary rounded-3">
-        <form th:action method="post">
+        <form th:action th:object="${member}" method="post">
             <div class="mb-3">
                 <label for="loginId" class="form-label">Id</label>
-                <input type="text" class="form-control" id="loginId" name="loginId">
+                <input type="text" class="form-control" id="loginId" th:field="*{loginId}">
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password">
+                <input type="password" class="form-control" id="password" th:field="*{password}">
             </div>
 <!--            <div class="mb-3 form-check">-->
 <!--                <input type="checkbox" class="form-check-input" id="exampleCheck1">-->

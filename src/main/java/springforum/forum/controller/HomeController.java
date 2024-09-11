@@ -1,7 +1,10 @@
 package springforum.forum.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import springforum.forum.dto.MemberLoginDto;
+import springforum.forum.entity.Member;
 
 @Controller
 public class HomeController {
@@ -12,12 +15,14 @@ public class HomeController {
     }
 
     @GetMapping("/signup")
-    public String signup() {
+    public String signup(Model model) {
+        model.addAttribute("member", new Member());
         return "login/signup";
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String login(Model model) {
+        model.addAttribute("member", new MemberLoginDto());
         return "login/login";
     }
 }
