@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{common/header::header}"></head>
+    <body>
+        <div class="container-sm w-75 y-5 mt-5 p-5 border border-secondary rounded-3">
+            <form th:action th:object="${post}" method="post">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="title" th:field="*{title}">
+                </div>
+                <div class="form-floating">
+                    <textarea class="form-control" placeholder="Leave a content here"
+                              id="content" th:field="*{content}" style="height: 200px;"></textarea>
+                    <label for="content">Contents</label>
+                </div>
+                <div class="y-5 mt-3">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

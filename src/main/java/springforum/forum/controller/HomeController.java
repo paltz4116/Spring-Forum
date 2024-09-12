@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import springforum.forum.dto.MemberLoginDto;
 import springforum.forum.entity.Member;
+import springforum.forum.entity.Post;
 
 @Controller
 public class HomeController {
@@ -24,5 +25,11 @@ public class HomeController {
     public String login(Model model) {
         model.addAttribute("member", new MemberLoginDto());
         return "login/login";
+    }
+
+    @GetMapping("/post")
+    public String post(Model model) {
+        model.addAttribute("post", new Post());
+        return "post/post";
     }
 }
