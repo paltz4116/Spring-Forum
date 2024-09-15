@@ -17,6 +17,11 @@ public class MemberService {
         memberRepository.save(member);
     }
 
+    public Optional<Member> findByLoginID(String loginId) {
+
+        return memberRepository.findByLoginId(loginId);
+    }
+
     public boolean checkMember(String loginId, String password) {
 
         Optional<Member> member = memberRepository.findByLoginId(loginId);

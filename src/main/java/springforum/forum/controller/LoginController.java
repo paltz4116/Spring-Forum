@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import springforum.forum.entity.Member;
 import springforum.forum.service.MemberService;
 
+import java.util.Optional;
+
 @Controller
 @RequiredArgsConstructor
 public class LoginController {
@@ -32,9 +34,12 @@ public class LoginController {
             return "login/login";
         }
 
+        Optional<Member> byLoginID = memberService.findByLoginID(loginId);
+        Member member = byLoginID.get();
+
         request.getSession().invalidate();
         HttpSession session = request.getSession();
-        session.setAttribute("userLoginId", loginId);
+        session.setAttribute("loginUser", member);
         session.setMaxInactiveInterval(3200);
 
         return "redirect:/";
