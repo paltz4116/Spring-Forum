@@ -9,13 +9,24 @@
         crossorigin="anonymous"></script>
 
     <div class="container-sm w-75 y-5 mt-5 p-5 border border-secondary rounded-3">
-        <ul class="list-group">
-            <li class="list-group-item">An item</li>
-            <li class="list-group-item">A second item</li>
-            <li class="list-group-item">A third item</li>
-            <li class="list-group-item">A fourth item</li>
-            <li class="list-group-item">And a fifth one</li>
-        </ul>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">번호</th>
+                <th scope="col">제목</th>
+                <th scope="col">댓글</th>
+                <th scope="col">사용자</th>
+            </tr>
+            </thead>
+            <tbody th:each="post : ${posts}">
+            <tr>
+                <th scope="row" th:text="${posts.indexOf(post) + 1}">number</th>
+                <td th:text="${post.getTitle()}">title</td>
+                <td th:text="${post.getComments().size()}">comments</td>
+                <td th:text="${post.getMember().getName()}">user</td>
+            </tr>
+            </tbody>
+        </table>
         <div class="y-5 mt-3">
             <div class="btn-group" role="group" aria-label="Basic example">
                 <button type="button" class="btn btn-primary"

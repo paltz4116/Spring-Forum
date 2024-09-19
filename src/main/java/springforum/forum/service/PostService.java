@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import springforum.forum.entity.Post;
 import springforum.forum.repository.PostRepository;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PostService {
@@ -13,5 +15,9 @@ public class PostService {
 
     public void save(Post post) {
         postRepository.save(post);
+    }
+
+    public List<Post> findAll() {
+        return postRepository.findAll();
     }
 }
