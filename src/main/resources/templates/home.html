@@ -23,10 +23,19 @@
                 <th scope="row" th:text="${posts.indexOf(post) + 1}">number</th>
                 <td th:text="${post.getTitle()}">title</td>
                 <td th:text="${post.getComments().size()}">comments</td>
-                <td th:text="${post.getMember().getName()}">user</td>
+                <td th:text="${post.getName()}">user</td>
             </tr>
             </tbody>
         </table>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item"
+                    th:each="num : ${#numbers.sequence(1, paging.getTotalPages())}">
+                    <a class="page-link" href="/" th:href="|/page/${num}|"
+                       th:text="${num}">page number</a>
+                </li>
+            </ul>
+        </nav>
         <div class="y-5 mt-3">
             <div class="btn-group" role="group" aria-label="Basic example">
                 <button type="button" class="btn btn-primary"

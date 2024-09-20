@@ -1,10 +1,14 @@
 package springforum.forum.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import springforum.forum.dto.MemberLoginDto;
+import springforum.forum.dto.PostResponseDto;
 import springforum.forum.entity.Member;
 import springforum.forum.entity.Post;
 import springforum.forum.service.PostService;
@@ -18,10 +22,24 @@ public class HomeController {
     private final PostService postService;
 
     @GetMapping("/")
-    public String home(Model model) {
+    public String home(Pageable pageable, Model model) {
 
-        List<Post> posts = postService.findAll();
+        Page<PostResponseDto> paging = postService.findPage(0, pageable);
+        List<PostResponseDto> posts = paging.getContent();
 
+        model.addAttribute("paging", paging);
+        model.addAttribute("posts", posts);
+
+        return "home";
+    }
+
+    @GetMapping("/page/{num}")
+    public String page(@PathVariable("num") int num, Pageable pageable, Model model) {
+
+        Page<PostResponseDto> paging = postService.findPage(num - 1, pageable);
+        List<PostResponseDto> posts = paging.getContent();
+
+        model.addAttribute("paging", paging);
         model.addAttribute("posts", posts);
 
         return "home";
