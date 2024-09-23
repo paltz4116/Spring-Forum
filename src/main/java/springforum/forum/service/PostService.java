@@ -11,6 +11,7 @@ import springforum.forum.entity.Post;
 import springforum.forum.repository.PostRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,10 +22,6 @@ public class PostService {
     public void save(Post post) {
         postRepository.save(post);
     }
-
-//    public List<Post> findAll() {
-//        return postRepository.findAll();
-//    }
 
     public Page<PostResponseDto> findAll(Pageable pageable) {
 
@@ -38,5 +35,15 @@ public class PostService {
 
         return postRepository.findAllByOrderByIdDesc(pageable)
                 .map(PostResponseDto::new);
+    }
+
+    public PostResponseDto findPost(Long id) {
+        Optional<Post> byId = postRepository.findById(id);
+
+        if (!byId.isPresent()) {
+            return null;
+        }
+
+        return new PostResponseDto(byId.get());
     }
 }

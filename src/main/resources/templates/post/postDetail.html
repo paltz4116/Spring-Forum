@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="~{common/header::header}"></head>
+<body>
+<div class="container-sm w-75 y-5 mt-5 p-5 border border-secondary rounded-3">
+    <h1 th:text="${post.getTitle()}">title</h1>
+    <div th:text="${post.getName()}"></div>
+    <div th:text="${post.getContent()}"></div>
+    <tbody th:each="comment : ${post.getComments()}">
+    <tr>
+        <td th:text="${comment.getContent()}"></td>
+        <td th:text="${comment.getName()}"></td>
+    </tr>
+    </tbody>
+</div>
+</body>
+</html>

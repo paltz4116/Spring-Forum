@@ -4,7 +4,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import springforum.forum.dto.PostResponseDto;
 import springforum.forum.entity.Member;
 import springforum.forum.entity.Post;
 import springforum.forum.service.PostService;
@@ -26,5 +30,15 @@ public class PostController {
         postService.save(post);
 
         return "redirect:/";
+    }
+
+    @GetMapping("/post/{id}")
+    public String postDetail(@PathVariable("id") Long id, Model model) {
+
+        PostResponseDto post = postService.findPost(id);
+
+        model.addAttribute("post", post);
+
+        return "post/postDetail";
     }
 }

@@ -21,7 +21,10 @@
             <tbody th:each="post : ${posts}">
             <tr>
                 <th scope="row" th:text="${posts.indexOf(post) + 1}">number</th>
-                <td th:text="${post.getTitle()}">title</td>
+                <td>
+                    <a href="/" th:href="|/post/${post.getId()}|"
+                    th:text="${post.getTitle()}">title</a>
+                </td>
                 <td th:text="${post.getComments().size()}">comments</td>
                 <td th:text="${post.getName()}">user</td>
             </tr>
