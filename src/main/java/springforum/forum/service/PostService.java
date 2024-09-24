@@ -6,11 +6,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import springforum.forum.dto.PostResponseDto;
-import springforum.forum.entity.Member;
 import springforum.forum.entity.Post;
 import springforum.forum.repository.PostRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -37,7 +35,17 @@ public class PostService {
                 .map(PostResponseDto::new);
     }
 
-    public PostResponseDto findPost(Long id) {
+    public Post findPost(Long id) {
+        Optional<Post> byId = postRepository.findById(id);
+
+        if (!byId.isPresent()) {
+            return null;
+        }
+
+        return byId.get();
+    }
+
+    public PostResponseDto findPostDto(Long id) {
         Optional<Post> byId = postRepository.findById(id);
 
         if (!byId.isPresent()) {

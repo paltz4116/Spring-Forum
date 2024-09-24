@@ -4,16 +4,28 @@
 >
 <head th:replace="~{common/header::header}"></head>
 <body>
-<div class="container-sm w-75 y-5 mt-5 p-5 border border-secondary rounded-3">
-    <h1 th:text="${post.getTitle()}">title</h1>
-    <div th:text="${post.getName()}"></div>
-    <div th:text="${post.getContent()}"></div>
-    <tbody th:each="comment : ${post.getComments()}">
-    <tr>
-        <td th:text="${comment.getContent()}"></td>
-        <td th:text="${comment.getName()}"></td>
-    </tr>
-    </tbody>
-</div>
+    <div class="container-sm w-75 y-5 mt-5 p-5 border border-secondary rounded-3">
+        <h1 th:text="${post.getTitle()}">title</h1>
+        <p th:text="${post.getName()}"></p>
+        <hr />
+        <p th:text="${post.getContent()}">contents</p>
+        <hr />
+        <p th:text="|comments ${post.getComments().size()}|">댓글 수</p>
+        <form th:action="|/post/comment/${post.getId()}|" method="post">
+            <div class="mb-3">
+                <label for="content" class="form-label">Comment</label>
+                <input type="text" class="form-control" id="content" name="content">
+            </div>
+            <button type="submit" class="btn btn-primary">댓글 쓰기</button>
+        </form>
+        <tbody th:each="comment : ${post.getComments()}">
+        <div class="mt-1 p-1 border border-secondary rounded-3">
+            <tr>
+                <td th:text="|${comment.getName()}:|"></td>
+                <td th:text="${comment.getContent()}"></td>
+            </tr>
+        </div>
+        </tbody>
+    </div>
 </body>
 </html>

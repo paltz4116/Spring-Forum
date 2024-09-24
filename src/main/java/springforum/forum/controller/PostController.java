@@ -8,9 +8,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import springforum.forum.dto.PostResponseDto;
+import springforum.forum.entity.Comment;
 import springforum.forum.entity.Member;
 import springforum.forum.entity.Post;
+import springforum.forum.service.CommentService;
 import springforum.forum.service.PostService;
 
 @Controller
@@ -18,6 +21,7 @@ import springforum.forum.service.PostService;
 public class PostController {
 
     private final PostService postService;
+    private final CommentService commentService;
 
     @PostMapping("/post")
     public String post(Post post, HttpServletRequest request) {
@@ -35,10 +39,22 @@ public class PostController {
     @GetMapping("/post/{id}")
     public String postDetail(@PathVariable("id") Long id, Model model) {
 
-        PostResponseDto post = postService.findPost(id);
+        PostResponseDto post = postService.findPostDto(id);
 
         model.addAttribute("post", post);
 
         return "post/postDetail";
+    }
+
+    @PostMapping("/post/comment/{id}")
+    public String commentPost(@PathVariable("id") Long id,
+                              @RequestParam("content") String content) {
+
+        Post post = postService.findPost(id);
+        Comment comment = new Comment(content, post);
+
+        commentService.saveComment(comment);
+
+        return "redirect:/post/" + id;
     }
 }

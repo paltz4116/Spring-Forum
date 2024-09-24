@@ -21,4 +21,10 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "POST_ID")
     private Post post;
+
+    public Comment(String content, Post post) {
+        this.name = post.getMember().getName();
+        this.content = content;
+        this.post = post;
+    }
 }
