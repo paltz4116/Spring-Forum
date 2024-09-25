@@ -13,9 +13,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     //Page<Post> findByMemberOrderByIdDesc(Member member, Pageable pageable);
 
+    @EntityGraph(attributePaths = {"member", "comments"})
     Page<Post> findAllByOrderByIdDesc(Pageable pageable);
-
-
 
     @Override
     @EntityGraph(attributePaths = {"member", "comments"})

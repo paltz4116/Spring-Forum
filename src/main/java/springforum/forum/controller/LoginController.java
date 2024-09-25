@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import springforum.forum.entity.Member;
@@ -41,6 +42,15 @@ public class LoginController {
         HttpSession session = request.getSession();
         session.setAttribute("loginUser", member);
         session.setMaxInactiveInterval(3200);
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        session.invalidate();
 
         return "redirect:/";
     }
