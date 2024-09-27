@@ -56,10 +56,4 @@ public class HomeController {
         model.addAttribute("member", new MemberLoginDto());
         return "login/login";
     }
-
-    @GetMapping("/post")
-    public String post(Model model) {
-        model.addAttribute("post", new Post());
-        return "post/post";
-    }
 }

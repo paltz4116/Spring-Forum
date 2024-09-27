@@ -23,7 +23,13 @@ public class PostController {
     private final PostService postService;
     private final CommentService commentService;
 
-    @PostMapping("/post")
+    @GetMapping("/posting")
+    public String post(Model model) {
+        model.addAttribute("post", new Post());
+        return "post/post";
+    }
+
+    @PostMapping("/posting")
     public String post(Post post, HttpServletRequest request) {
 
         HttpSession session = request.getSession(false);
@@ -48,10 +54,14 @@ public class PostController {
 
     @PostMapping("/post/comment/{id}")
     public String commentPost(@PathVariable("id") Long id,
-                              @RequestParam("content") String content) {
+                              @RequestParam("content") String content,
+                              HttpServletRequest request) {
+
+        HttpSession session = request.getSession(false);
+        Member loginUser = (Member) session.getAttribute("loginUser");
 
         Post post = postService.findPost(id);
-        Comment comment = new Comment(content, post);
+        Comment comment = new Comment(content, loginUser.getName(), post);
 
         commentService.saveComment(comment);
 

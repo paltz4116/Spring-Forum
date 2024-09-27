@@ -22,8 +22,8 @@ public class Comment {
     @JoinColumn(name = "POST_ID")
     private Post post;
 
-    public Comment(String content, Post post) {
-        this.name = post.getMember().getName();
+    public Comment(String content, String username, Post post) {
+        this.name = username;
         this.content = content;
         this.post = post;
     }

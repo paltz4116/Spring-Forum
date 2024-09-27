@@ -41,7 +41,7 @@ public class LoginController {
         request.getSession().invalidate();
         HttpSession session = request.getSession();
         session.setAttribute("loginUser", member);
-        session.setMaxInactiveInterval(3200);
+        session.setMaxInactiveInterval(1800);
 
         return "redirect:/";
     }
