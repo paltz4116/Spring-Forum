@@ -54,4 +54,9 @@ public class PostService {
 
         return new PostResponseDto(byId.get());
     }
+
+    public Post findPostForComment(Long id) {
+
+        return postRepository.getReferenceById(id);
+    }
 }

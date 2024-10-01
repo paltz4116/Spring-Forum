@@ -3,12 +3,13 @@ package springforum.forum.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import springforum.forum.dto.CommentSaveDto;
 import springforum.forum.dto.PostResponseDto;
 import springforum.forum.entity.Comment;
 import springforum.forum.entity.Member;
@@ -16,6 +17,7 @@ import springforum.forum.entity.Post;
 import springforum.forum.service.CommentService;
 import springforum.forum.service.PostService;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class PostController {
@@ -53,18 +55,24 @@ public class PostController {
     }
 
     @PostMapping("/post/comment/{id}")
-    public String commentPost(@PathVariable("id") Long id,
-                              @RequestParam("content") String content,
-                              HttpServletRequest request) {
+    public String commentPost(@PathVariable("id") Long postId,
+                              HttpServletRequest request,
+                              @Validated @ModelAttribute CommentSaveDto commentDto,
+                              BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            log.info("errors={}", bindingResult);
+            return "redirect:/post/" + postId;
+        }
 
         HttpSession session = request.getSession(false);
         Member loginUser = (Member) session.getAttribute("loginUser");
 
-        Post post = postService.findPost(id);
-        Comment comment = new Comment(content, loginUser.getName(), post);
+        Post post = postService.findPostForComment(postId);
+        Comment comment = new Comment(commentDto.getContent(), loginUser.getName(), post);
 
         commentService.saveComment(comment);
 
-        return "redirect:/post/" + id;
+        return "redirect:/post/" + postId;
     }
 }
