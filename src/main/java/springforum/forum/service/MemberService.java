@@ -2,6 +2,7 @@ package springforum.forum.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import springforum.forum.dto.SignupDto;
 import springforum.forum.entity.Member;
 import springforum.forum.repository.MemberRepository;
 
@@ -13,8 +14,9 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    public void save(Member member) {
-        memberRepository.save(member);
+    public void save(SignupDto member) {
+        memberRepository.save(new Member(member.getLoginId(),
+                member.getName(), member.getPassword()));
     }
 
     public Optional<Member> findByLoginID(String loginId) {

@@ -26,7 +26,7 @@
                     th:text="${post.getTitle()}">title</a>
                 </td>
                 <td th:text="${post.getComments().size()}">comments</td>
-                <td th:text="${post.getName()}">user</td>
+                <td th:text="${post.getMember().getName()}">user</td>
             </tr>
             </tbody>
         </table>

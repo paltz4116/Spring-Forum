@@ -28,4 +28,10 @@ public class Post {
 
     @OneToMany(mappedBy = "post")
     private List<Comment> comments = new ArrayList<>();
+
+    public Post(Member member, String title, String content) {
+        this.member = member;
+        this.title = title;
+        this.content = content;
+    }
 }

@@ -10,7 +10,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springforum.forum.dto.CommentSaveDto;
-import springforum.forum.dto.PostResponseDto;
+import springforum.forum.dto.PostDto;
+import springforum.forum.dto.PostSaveDto;
 import springforum.forum.entity.Comment;
 import springforum.forum.entity.Member;
 import springforum.forum.entity.Post;
@@ -32,7 +33,14 @@ public class PostController {
     }
 
     @PostMapping("/posting")
-    public String post(Post post, HttpServletRequest request) {
+    public String post(@Validated @ModelAttribute("post") PostSaveDto post,
+                       BindingResult bindingResult,
+                       HttpServletRequest request) {
+
+        if (bindingResult.hasErrors()) {
+            log.info("error={}", bindingResult);
+            return "post/post";
+        }
 
         HttpSession session = request.getSession(false);
 
@@ -47,7 +55,7 @@ public class PostController {
     @GetMapping("/post/{id}")
     public String postDetail(@PathVariable("id") Long id, Model model) {
 
-        PostResponseDto post = postService.findPostDto(id);
+        PostDto post = postService.findPostDto(id);
 
         model.addAttribute("post", post);
 

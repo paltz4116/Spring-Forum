@@ -8,9 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import springforum.forum.dto.MemberLoginDto;
-import springforum.forum.dto.PostResponseDto;
+import springforum.forum.dto.PostDto;
 import springforum.forum.entity.Member;
-import springforum.forum.entity.Post;
 import springforum.forum.service.PostService;
 
 import java.util.List;
@@ -24,8 +23,8 @@ public class HomeController {
     @GetMapping("/")
     public String home(Pageable pageable, Model model) {
 
-        Page<PostResponseDto> paging = postService.findPage(0, pageable);
-        List<PostResponseDto> posts = paging.getContent();
+        Page<PostDto> paging = postService.findPage(0, pageable);
+        List<PostDto> posts = paging.getContent();
 
         model.addAttribute("paging", paging);
         model.addAttribute("posts", posts);
@@ -36,8 +35,8 @@ public class HomeController {
     @GetMapping("/page/{num}")
     public String page(@PathVariable("num") int num, Pageable pageable, Model model) {
 
-        Page<PostResponseDto> paging = postService.findPage(num - 1, pageable);
-        List<PostResponseDto> posts = paging.getContent();
+        Page<PostDto> paging = postService.findPage(num - 1, pageable);
+        List<PostDto> posts = paging.getContent();
 
         model.addAttribute("paging", paging);
         model.addAttribute("posts", posts);

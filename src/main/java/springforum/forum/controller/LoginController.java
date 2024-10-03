@@ -3,15 +3,23 @@ package springforum.forum.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import springforum.forum.dto.MemberLoginDto;
+import springforum.forum.dto.SignupDto;
 import springforum.forum.entity.Member;
 import springforum.forum.service.MemberService;
 
 import java.util.Optional;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class LoginController {
@@ -19,7 +27,13 @@ public class LoginController {
     private final MemberService memberService;
 
     @PostMapping("/signup")
-    public String signup(Member member) {
+    public String signup(@Validated @ModelAttribute("member") SignupDto member,
+                         BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            log.info("error={}", bindingResult);
+            return "login/signup";
+        }
 
         memberService.save(member);
 
@@ -27,15 +41,21 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam("loginId") String loginId,
-                        @RequestParam("password") String password,
+    public String login(@Validated @ModelAttribute("member") MemberLoginDto memberLoginDto,
+                        BindingResult bindingResult,
                         HttpServletRequest request) {
 
-        if (!memberService.checkMember(loginId, password)) {
+        if (bindingResult.hasErrors()) {
+            log.info("error={}", bindingResult);
             return "login/login";
         }
 
-        Optional<Member> byLoginID = memberService.findByLoginID(loginId);
+        if (!memberService.checkMember(memberLoginDto.getLoginId(),
+                memberLoginDto.getPassword())) {
+            return "login/login";
+        }
+
+        Optional<Member> byLoginID = memberService.findByLoginID(memberLoginDto.getLoginId());
         Member member = byLoginID.get();
 
         request.getSession().invalidate();
