@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.servlet.HandlerInterceptor;
+import springforum.forum.entity.Member;
 
 public class LoginCheckInterceptor implements HandlerInterceptor {
 
@@ -13,7 +14,9 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 
         HttpSession session = request.getSession(false);
 
-        if (session == null || session.getAttribute("loginUser") == null) {
+        Member loginUser = (Member) request.getAttribute("loginUser");
+
+        if (loginUser == null) {
 
             response.sendRedirect("/login");
 

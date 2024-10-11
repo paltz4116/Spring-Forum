@@ -1,6 +1,8 @@
 package springforum.forum.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import springforum.forum.service.PostService;
 
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
@@ -21,25 +24,28 @@ public class HomeController {
     private final PostService postService;
 
     @GetMapping("/")
-    public String home(Pageable pageable, Model model) {
+    public String home(HttpServletRequest request, Pageable pageable, Model model) {
 
         Page<PostDto> paging = postService.findPage(0, pageable);
         List<PostDto> posts = paging.getContent();
 
         model.addAttribute("paging", paging);
         model.addAttribute("posts", posts);
+        model.addAttribute("loginUser", request.getAttribute("loginUser"));
 
         return "home";
     }
 
     @GetMapping("/page/{num}")
-    public String page(@PathVariable("num") int num, Pageable pageable, Model model) {
+    public String page(@PathVariable("num") int num, HttpServletRequest request,
+                       Pageable pageable, Model model) {
 
         Page<PostDto> paging = postService.findPage(num - 1, pageable);
         List<PostDto> posts = paging.getContent();
 
         model.addAttribute("paging", paging);
         model.addAttribute("posts", posts);
+        model.addAttribute("loginUser", request.getAttribute("loginUser"));
 
         return "home";
     }
@@ -47,12 +53,16 @@ public class HomeController {
     @GetMapping("/signup")
     public String signup(Model model) {
         model.addAttribute("member", new Member());
+        model.addAttribute("loginUser", null);
+
         return "login/signup";
     }
 
     @GetMapping("/login")
     public String login(Model model) {
         model.addAttribute("member", new MemberLoginDto());
+        model.addAttribute("loginUser", null);
+
         return "login/login";
     }
 }

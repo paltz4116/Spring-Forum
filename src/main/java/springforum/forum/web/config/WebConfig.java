@@ -5,6 +5,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springforum.forum.web.interceptor.LoggedInUserCheckInterceptor;
 import springforum.forum.web.interceptor.LoginCheckInterceptor;
+import springforum.forum.web.interceptor.LoginInterceptor;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
@@ -12,14 +13,18 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
-        registry.addInterceptor(new LoginCheckInterceptor())
+        registry.addInterceptor(new LoginInterceptor())
                 .order(1)
+                .addPathPatterns("/**");
+
+        registry.addInterceptor(new LoginCheckInterceptor())
+                .order(2)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/", "/login", "/signup",
                         "/page/*", "/post/*");
 
         registry.addInterceptor(new LoggedInUserCheckInterceptor())
-                .order(2)
+                .order(3)
                 .addPathPatterns("/login", "/signup");
     }
 }
