@@ -27,18 +27,20 @@ public class PostController {
     private final CommentService commentService;
 
     @GetMapping("/posting")
-    public String post(Model model) {
+    public String post(HttpServletRequest request, Model model) {
         model.addAttribute("post", new Post());
+        model.addAttribute("loginUser", request.getAttribute("loginUser"));
         return "post/post";
     }
 
     @PostMapping("/posting")
     public String post(@Validated @ModelAttribute("post") PostSaveDto post,
                        BindingResult bindingResult,
-                       HttpServletRequest request) {
+                       HttpServletRequest request, Model model) {
 
         if (bindingResult.hasErrors()) {
             log.info("error={}", bindingResult);
+            model.addAttribute("loginUser", request.getAttribute("loginUser"));
             return "post/post";
         }
 
@@ -53,11 +55,13 @@ public class PostController {
     }
 
     @GetMapping("/post/{id}")
-    public String postDetail(@PathVariable("id") Long id, Model model) {
+    public String postDetail(@PathVariable("id") Long id,
+                             HttpServletRequest request, Model model) {
 
         PostDto post = postService.findPostDto(id);
 
         model.addAttribute("post", post);
+        model.addAttribute("loginUser", request.getAttribute("loginUser"));
 
         return "post/postDetail";
     }

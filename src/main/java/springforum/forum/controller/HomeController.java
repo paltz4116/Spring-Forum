@@ -53,7 +53,6 @@ public class HomeController {
     @GetMapping("/signup")
     public String signup(Model model) {
         model.addAttribute("member", new Member());
-        model.addAttribute("loginUser", null);
 
         return "login/signup";
     }
@@ -61,7 +60,6 @@ public class HomeController {
     @GetMapping("/login")
     public String login(Model model) {
         model.addAttribute("member", new MemberLoginDto());
-        model.addAttribute("loginUser", null);
 
         return "login/login";
     }

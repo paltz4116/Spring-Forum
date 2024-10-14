@@ -28,7 +28,7 @@ public class LoginController {
 
     @PostMapping("/signup")
     public String signup(@Validated @ModelAttribute("member") SignupDto member,
-                         BindingResult bindingResult) {
+                         BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
             log.info("error={}", bindingResult);
